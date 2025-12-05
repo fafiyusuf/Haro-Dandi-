@@ -1,18 +1,18 @@
-import express from "express"
 import cors from "cors"
-import helmet from "helmet"
 import dotenv from "dotenv"
+import express from "express"
+import helmet from "helmet"
 import { connectDB } from "./config/database.js"
 import { config } from "./config/env.js"
 import { errorHandler } from "./middleware/errorHandler.js"
 
 // Routes
 import authRoutes from "./routes/auth.js"
-import pageRoutes from "./routes/pages.js"
-import hotelRoutes from "./routes/hotels.js"
-import tourRoutes from "./routes/tours.js"
-import galleryRoutes from "./routes/gallery.js"
 import contactRoutes from "./routes/contact.js"
+import galleryRoutes from "./routes/gallery.js"
+import hotelRoutes from "./routes/hotels.js"
+import pageRoutes from "./routes/pages.js"
+import tourRoutes from "./routes/tours.js"
 import translationRoutes from "./routes/translations.js"
 
 dotenv.config()
@@ -56,4 +56,14 @@ const startServer = async () => {
   }
 }
 
-startServer()
+// For Vercel deployment
+if (process.env.VERCEL) {
+  // Connect to database for serverless
+  connectDB().catch(console.error)
+} else {
+  // Start server for local development
+  startServer()
+}
+
+// Export for Vercel
+export default app
