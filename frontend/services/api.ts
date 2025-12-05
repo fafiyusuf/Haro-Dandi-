@@ -1,7 +1,7 @@
-import axios, { type AxiosInstance } from "axios"
 import { useAuthStore } from "@/stores/useAuthStore"
+import axios, { type AxiosInstance } from "axios"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://haro-dandi.onrender.com/"
 
 class ApiClient {
   private client: AxiosInstance
@@ -11,6 +11,7 @@ class ApiClient {
       baseURL: API_URL,
       timeout: 10000,
     })
+
 
     // Add token to requests
     this.client.interceptors.request.use((config) => {
