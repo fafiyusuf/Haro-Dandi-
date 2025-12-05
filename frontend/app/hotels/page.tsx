@@ -7,11 +7,13 @@ import { useLanguageStore } from "@/stores/useLanguageStore"
 import type { Hotel } from "@/types/index"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export default function Hotels() {
   const [hotels, setHotels] = useState<Hotel[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { language } = useLanguageStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -47,8 +49,8 @@ export default function Hotels() {
             />
           </div>
           <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-8">
-            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">Hotels & Lodges</h1>
-            <p className="text-lg font-light opacity-90">Experience comfort and luxury in stunning locations</p>
+            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">{t("hotels.title")}</h1>
+            <p className="text-lg font-light opacity-90">{t("hotels.subtitle")}</p>
           </div>
         </section>
 
@@ -56,10 +58,10 @@ export default function Hotels() {
         <section className="py-24 bg-white">
           <div className="max-w-[1400px] mx-auto px-8">
             {isLoading ? (
-              <div className="text-center py-12 text-[#666666]">Loading hotels...</div>
+              <div className="text-center py-12 text-[#666666]">{t("hotels.loading")}</div>
             ) : hotels.length === 0 ? (
               <div className="text-center py-12 text-[#666666]">
-                No hotels available at the moment.
+                {t("hotels.empty")}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -91,10 +93,10 @@ export default function Hotels() {
                         <div className="flex justify-between items-center">
                           <span className="text-2xl font-light text-[#2C2C2C]">
                             ${hotel.pricePerNight}
-                            <span className="text-sm text-[#666666]">/night</span>
+                            <span className="text-sm text-[#666666]">{t("hotels.perNight")}</span>
                           </span>
                           <span className="text-xs tracking-widest uppercase text-[#75D4D9] font-medium group-hover:text-[#5AB8BD]">
-                            View Details →
+                            {t("hotels.viewDetails")}
                           </span>
                         </div>
                       </div>
@@ -109,13 +111,13 @@ export default function Hotels() {
         {/* Call to Action */}
         <section className="py-24 bg-[#F8F7F5]">
           <div className="max-w-[1000px] mx-auto px-8 text-center">
-            <h2 className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C]">Ready to Book Your Stay?</h2>
-            <p className="text-lg text-[#666666] font-light mb-8">Contact us today for reservations and special packages</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C]">{t("hotels.cta.title")}</h2>
+            <p className="text-lg text-[#666666] font-light mb-8">{t("hotels.cta.subtitle")}</p>
             <Link
               href="/contact"
               className="inline-block px-10 py-4 bg-[#2C5F5F] text-white text-xs tracking-widest uppercase font-medium hover:bg-[#1F4A4A] transition-all duration-300 rounded-full"
             >
-              Get In Touch
+              {t("hotels.cta.button")}
             </Link>
           </div>
         </section>

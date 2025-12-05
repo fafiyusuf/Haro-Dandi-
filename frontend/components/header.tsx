@@ -5,15 +5,22 @@ import { useLanguageStore } from "@/stores/useLanguageStore"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const { language, setLanguage } = useLanguageStore()
   // const { token, admin, clearAuth } = useAuthStore()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const pathname = usePathname()
+
+  // Sync i18n with the language store
+  useEffect(() => {
+    if (i18n.language !== language) {
+      i18n.changeLanguage(language)
+    }
+  }, [language, i18n])
 
   const languages = [
     { code: "en", name: "English" },
@@ -30,11 +37,11 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-sm border-b border-[#E3E9D8] shadow-sm">
-      <div className="max-w-[1400px] mx-auto px-2">
-        <div className="flex justify-between items-center h-24">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8">
+        <div className="flex justify-between items-center h-20 md:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="relative w-100 h-16">
+            <div className="relative w-24 h-12 md:w-100 md:h-16">
               <Image 
                 src="https://i.imghippo.com/files/mk3387B.jpg" 
                 alt="Haro Dandi Hotel & Tourism" 
@@ -128,16 +135,37 @@ export default function Header() {
           </nav>
 
           {/* Language & Admin */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 md:gap-6">
             {/* Language Selector */}
-            <div className="flex gap-1 border border-[#E3E9D8]">
+            <div className="hidden md:flex gap-1 border border-[#E3E9D8]">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => {
                     setLanguage(lang.code)
+                    i18n.changeLanguage(lang.code)
                   }}
                   className={`text-[10px] px-3 py-2 tracking-wider font-medium transition-colors ${
+                    language === lang.code
+                      ? "bg-[#75D4D9] text-white"
+                      : "bg-white text-[#4A7863] hover:bg-[#E3E9D8]"
+                  }`}
+                >
+                  {lang.code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Language Selector - Compact */}
+            <div className="flex md:hidden gap-0.5 border border-[#E3E9D8]">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    setLanguage(lang.code)
+                    i18n.changeLanguage(lang.code)
+                  }}
+                  className={`text-[9px] px-2 py-1.5 tracking-wider font-medium transition-colors ${
                     language === lang.code
                       ? "bg-[#75D4D9] text-white"
                       : "bg-white text-[#4A7863] hover:bg-[#E3E9D8]"
@@ -168,19 +196,30 @@ export default function Header() {
             )} */}
 
             {/* Mobile Menu Toggle */}
-            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-[#4A7863]">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="lg:hidden p-2 text-[#4A7863] hover:bg-[#E3E9D8] transition-colors rounded"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <nav className="lg:hidden border-t border-[#E3E9D8] py-6 space-y-1 bg-white">
+          <nav className="lg:hidden border-t border-[#E3E9D8] py-4 space-y-1 bg-white">
             <Link 
               href="/" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/') 
                   ? 'bg-[#75D4D9] text-white' 
@@ -191,6 +230,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/about" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/about') 
                   ? 'bg-[#75D4D9] text-white' 
@@ -201,6 +241,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/hotels" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/hotels') 
                   ? 'bg-[#75D4D9] text-white' 
@@ -211,6 +252,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/tours" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/tours') 
                   ? 'bg-[#75D4D9] text-white' 
@@ -221,6 +263,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/gallery" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/gallery') 
                   ? 'bg-[#75D4D9] text-white' 
@@ -231,6 +274,7 @@ export default function Header() {
             </Link>
             <Link 
               href="/contact" 
+              onClick={() => setIsOpen(false)}
               className={`block px-4 py-3 text-xs tracking-widest uppercase transition-colors ${
                 isActive('/contact') 
                   ? 'bg-[#75D4D9] text-white' 

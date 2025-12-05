@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="font-serif text-xl mb-6 tracking-tight">HARO DANDI</h3>
+            <h3 className="font-serif text-xl mb-6 tracking-tight">{t("footer.company")}</h3>
             <div className="flex flex-wrap gap-3 mb-6">
               <Link href="#" className="w-9 h-9 rounded-full bg-white flex items-center justify-center hover:bg-gray-200 transition-colors shrink-0">
                 <svg className="w-5 h-5 text-[#1C3D3D]" fill="currentColor" viewBox="0 0 24 24">
@@ -45,11 +45,11 @@ export default function Footer() {
 
           {/* Column 1 */}
           <div>
-            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">CONTACT US</h4>
+            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">{t("footer.contactUs")}</h4>
             <ul className="space-y-2 text-sm font-light">
               <li>
                 <Link href="/contact" className="hover:text-gray-300 transition-colors">
-                  FAQS
+                  {t("footer.faqs")}
                 </Link>
               </li>
             </ul>
@@ -57,21 +57,21 @@ export default function Footer() {
 
           {/* Column 2 */}
           <div>
-            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">PARTNERSHIPS</h4>
+            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">{t("footer.partnerships")}</h4>
             <ul className="space-y-2 text-sm font-light">
               <li>
                 <Link href="#" className="hover:text-gray-300 transition-colors">
-                  CORPORATE
+                  {t("footer.corporate")}
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-gray-300 transition-colors">
-                  ASW FOUNDATION
+                  {t("footer.foundation")}
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-gray-300 transition-colors">
-                  CAREERS
+                  {t("footer.careers")}
                 </Link>
               </li>
             </ul>
@@ -79,16 +79,16 @@ export default function Footer() {
 
           {/* Column 3 */}
           <div>
-            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">MANAGE COOKIES</h4>
+            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">{t("footer.cookies")}</h4>
             <ul className="space-y-2 text-sm font-light">
               <li>
                 <Link href="#" className="hover:text-gray-300 transition-colors">
-                  PRIVACY POLICY
+                  {t("footer.privacy")}
                 </Link>
               </li>
               <li>
                 <Link href="#" className="hover:text-gray-300 transition-colors">
-                  TERMS OF SERVICE
+                  {t("footer.terms")}
                 </Link>
               </li>
             </ul>
@@ -96,15 +96,15 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">SIGN UP TO OUR NEWSLETTER</h4>
+            <h4 className="text-xs tracking-widest uppercase mb-4 font-medium">{t("footer.newsletter")}</h4>
             <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="email"
-                placeholder="Enter email address"
+                placeholder={t("footer.email.placeholder")}
                 className="flex-1 px-4 py-2 text-sm bg-white text-gray-800 placeholder-gray-500 focus:outline-none min-w-0"
               />
               <button className="px-6 py-2 bg-[#D2691E] text-white text-sm font-medium hover:bg-[#B85A19] transition-colors uppercase tracking-wider whitespace-nowrap">
-                Subscribe
+                {t("footer.subscribe")}
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-3 font-light">

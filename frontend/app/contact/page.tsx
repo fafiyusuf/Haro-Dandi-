@@ -6,8 +6,10 @@ import Footer from "@/components/footer"
 import Header from "@/components/header"
 import { apiClient } from "@/services/api"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export default function Contact() {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -64,8 +66,8 @@ export default function Contact() {
             />
           </div>
           <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-8">
-            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">Contact Us</h1>
-            <p className="text-lg font-light opacity-90">We'd love to hear from you. Get in touch with us today.</p>
+            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">{t("contact.title")}</h1>
+            <p className="text-lg font-light opacity-90">{t("contact.subtitle")}</p>
           </div>
         </section>
 
@@ -76,11 +78,11 @@ export default function Contact() {
               {/* Contact Info */}
               <div className="lg:col-span-1 space-y-8">
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📍 Address</h3>
-                  <p className="text-[#666666] font-light">Addis Ababa, Ethiopia</p>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📍 {t("contact.address")}</h3>
+                  <p className="text-[#666666] font-light">{t("contact.address.value")}</p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📞 Phone</h3>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📞 {t("contact.phone")}</h3>
                   <p className="text-[#666666] font-light">
                     <a href="tel:+251" className="hover:text-[#75D4D9] transition-colors">
                       +251 XXX XXX XXX
@@ -88,7 +90,7 @@ export default function Contact() {
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📧 Email</h3>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📧 {t("contact.email")}</h3>
                   <p className="text-[#666666] font-light">
                     <a href="mailto:info@harodandi.com" className="hover:text-[#75D4D9] transition-colors">
                       info@harodandi.com
@@ -96,24 +98,24 @@ export default function Contact() {
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">🕐 Hours</h3>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">🕐 {t("contact.hours")}</h3>
                   <p className="text-[#666666] font-light leading-relaxed">
-                    Monday - Friday: 9:00 AM - 6:00 PM
+                    {t("contact.hours.weekday")}
                     <br />
-                    Saturday: 10:00 AM - 4:00 PM
+                    {t("contact.hours.saturday")}
                     <br />
-                    Sunday: Closed
+                    {t("contact.hours.sunday")}
                   </p>
                 </div>
               </div>
 
               {/* Contact Form */}
               <div className="lg:col-span-2 bg-[#F8F7F5] p-10">
-                <h2 className="font-serif text-3xl md:text-4xl font-normal mb-8 text-[#2C2C2C]">Send us a Message</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-normal mb-8 text-[#2C2C2C]">{t("contact.form.title")}</h2>
 
                 {success && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 text-sm font-light">
-                    Thank you! Your message has been sent successfully.
+                    {t("contact.form.success")}
                   </div>
                 )}
 
@@ -124,7 +126,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-light mb-2 text-[#666666]">First Name *</label>
+                      <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.firstName")} {t("contact.form.required")}</label>
                       <input
                         type="text"
                         name="firstName"
@@ -132,11 +134,11 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                        placeholder="John"
+                        placeholder={t("contact.form.placeholder.firstName")}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-light mb-2 text-[#666666]">Last Name *</label>
+                      <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.lastName")} {t("contact.form.required")}</label>
                       <input
                         type="text"
                         name="lastName"
@@ -144,14 +146,14 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                        placeholder="Doe"
+                        placeholder={t("contact.form.placeholder.lastName")}
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-light mb-2 text-[#666666]">Email *</label>
+                      <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.email")} {t("contact.form.required")}</label>
                       <input
                         type="email"
                         name="email"
@@ -159,24 +161,24 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                        placeholder="john@example.com"
+                        placeholder={t("contact.form.placeholder.email")}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-light mb-2 text-[#666666]">Phone</label>
+                      <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.phone")}</label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                        placeholder="+251 XXX XXX XXX"
+                        placeholder={t("contact.form.placeholder.phone")}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-light mb-2 text-[#666666]">Subject *</label>
+                    <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.subject")} {t("contact.form.required")}</label>
                     <input
                       type="text"
                       name="subject"
@@ -184,12 +186,12 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                      placeholder="How can we help?"
+                      placeholder={t("contact.form.placeholder.subject")}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-light mb-2 text-[#666666]">Message *</label>
+                    <label className="block text-sm font-light mb-2 text-[#666666]">{t("contact.form.message")} {t("contact.form.required")}</label>
                     <textarea
                       name="message"
                       value={formData.message}
@@ -197,7 +199,7 @@ export default function Contact() {
                       required
                       rows={6}
                       className="w-full px-4 py-3 border border-[#E8DFD0] bg-white focus:outline-none focus:border-[#75D4D9] transition-colors text-[#2C2C2C]"
-                      placeholder="Tell us more about your inquiry..."
+                      placeholder={t("contact.form.placeholder.message")}
                     />
                   </div>
 
@@ -206,7 +208,7 @@ export default function Contact() {
                     disabled={isLoading}
                     className="px-10 py-4 bg-[#2C5F5F] text-white text-xs tracking-widest uppercase font-medium hover:bg-[#1F4A4A] transition-all duration-300 disabled:opacity-50"
                   >
-                    {isLoading ? "Sending..." : "Send Message"}
+                    {isLoading ? t("common.loading") : t("contact.form.submit")}
                   </button>
                 </form>
               </div>

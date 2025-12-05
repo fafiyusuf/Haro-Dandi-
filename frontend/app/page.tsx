@@ -5,10 +5,12 @@ import Header from "@/components/header"
 import { motion, useScroll, useSpring } from "framer-motion"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const { scrollYProgress } = useScroll()
+  const { t } = useTranslation()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -156,7 +158,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
-              Discover Ethiopia's Hidden Treasures
+              {t("hero.title")}
             </motion.h1>
             <motion.p 
               className="text-lg md:text-xl mb-12 font-light tracking-wide max-w-2xl mx-auto drop-shadow-lg"
@@ -164,7 +166,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
-              Experience authentic Ethiopian hospitality, breathtaking landscapes, and unforgettable cultural journeys with Haro Dandi
+              {t("hero.subtitle")}
             </motion.p>
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -180,7 +182,7 @@ export default function Home() {
                   href="/hotels"
                   className="block px-10 py-4 bg-[#75D4D9] text-white text-xs tracking-widest uppercase font-medium hover:bg-[#5AB8BD] transition-all duration-300 shadow-lg"
                 >
-                  Explore Our Lodges
+                  {t("hero.cta.lodges")}
                 </Link>
               </motion.div>
               <motion.div
@@ -191,7 +193,7 @@ export default function Home() {
                   href="/contact"
                   className="block px-10 py-4 border-2 border-white text-white text-xs tracking-widest uppercase font-medium hover:bg-white hover:text-[#4A7863] transition-all duration-300 shadow-lg backdrop-blur-sm"
                 >
-                  Get In Touch
+                  {t("hero.cta.contact")}
                 </Link>
               </motion.div>
             </motion.div>
@@ -214,7 +216,7 @@ export default function Home() {
                   whileHover={{ color: "#75D4D9", x: 10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  Experience Ethiopian hospitality with exclusive benefits
+                  {t("home.experience.title")}
                 </motion.h2>
                 <motion.p 
                   className="text-[#666666] text-base font-light leading-relaxed"
@@ -223,7 +225,7 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  Indulge in luxury with our curated collection of Ethiopia's best hotels and enjoy exclusive benefits for our valued guests.
+                  {t("home.experience.description")}
                 </motion.p>
               </motion.div>
               <motion.div 
@@ -278,7 +280,7 @@ export default function Home() {
                   whileHover={{ color: "#75D4D9", x: 10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  Discover new inspiration for your next journey
+                  {t("home.discover.title")}
                 </motion.h2>
                 <motion.p 
                   className="text-[#666666] text-base font-light leading-relaxed"
@@ -287,7 +289,7 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  Whether it's beautiful destinations or thrilling experiences, ignite your wanderlust and discover new reasons to travel and explore.
+                  {t("home.discover.description")}
                 </motion.p>
               </motion.div>
             </div>
@@ -310,7 +312,7 @@ export default function Home() {
                   whileHover={{ color: "#75D4D9", x: 10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  Belong to a community with a shared passion
+                  {t("home.community.title")}
                 </motion.h2>
                 <motion.p 
                   className="text-[#666666] text-base font-light leading-relaxed"
@@ -319,7 +321,7 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  Connect with other travelers online or at our events and forge lasting friendships that transcend borders.
+                  {t("home.community.description")}
                 </motion.p>
               </motion.div>
               <motion.div 
@@ -352,24 +354,24 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              Member benefits
+              {t("home.benefits.title")}
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
-                  title: "Hotel Benefits",
-                  desc: "Discover upgrades, late check-out and other benefits at partner hotels"
+                  titleKey: "home.benefits.hotels.title",
+                  descKey: "home.benefits.hotels.desc"
                 },
                 {
                   icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-                  title: "Global Community",
-                  desc: "Meet fellow travelers online at over 1000 exclusive events"
+                  titleKey: "home.benefits.globalCommunity.title",
+                  descKey: "home.benefits.globalCommunity.desc"
                 },
                 {
                   icon: "M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7",
-                  title: "More Than 800 Events",
-                  desc: "Meet fellow members at our exclusive events worldwide"
+                  titleKey: "home.benefits.events.title",
+                  descKey: "home.benefits.events.desc"
                 }
               ].map((benefit, i) => (
                 <motion.div
@@ -394,10 +396,10 @@ export default function Home() {
                     className="font-serif mb-3 text-[#2C2C2C] uppercase tracking-wider text-sm"
                     whileHover={{ color: "#75D4D9" }}
                   >
-                    {benefit.title}
+                    {t(benefit.titleKey)}
                   </motion.h3>
                   <p className="text-[#666666] text-sm font-light leading-relaxed">
-                    {benefit.desc}
+                    {t(benefit.descKey)}
                   </p>
                 </motion.div>
               ))}
@@ -406,18 +408,18 @@ export default function Home() {
               {[
                 {
                   icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7",
-                  title: "Daily Travel Inspiration",
-                  desc: "Fresh editorials every day to inspire your next trip"
+                  titleKey: "home.benefits.inspiration.title",
+                  descKey: "home.benefits.inspiration.desc"
                 },
                 {
                   icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-                  title: "Travel Privileges",
-                  desc: "Discover exclusive deals and upgrades from trusted travel brands"
+                  titleKey: "home.benefits.privileges.title",
+                  descKey: "home.benefits.privileges.desc"
                 },
                 {
                   icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-                  title: "Hotel Deals",
-                  desc: "Get the best hotel deals and travel hotels with our special offers"
+                  titleKey: "home.benefits.deals.title",
+                  descKey: "home.benefits.deals.desc"
                 }
               ].map((benefit, i) => (
                 <motion.div
@@ -442,10 +444,10 @@ export default function Home() {
                     className="font-serif mb-3 text-[#2C2C2C] uppercase tracking-wider text-sm"
                     whileHover={{ color: "#75D4D9" }}
                   >
-                    {benefit.title}
+                    {t(benefit.titleKey)}
                   </motion.h3>
                   <p className="text-[#666666] text-sm font-light leading-relaxed">
-                    {benefit.desc}
+                    {t(benefit.descKey)}
                   </p>
                 </motion.div>
               ))}
@@ -457,7 +459,7 @@ export default function Home() {
         <section className="py-24 bg-[#F8F7F5]">
           <div className="max-w-[1400px] mx-auto px-8">
             <h2 className="font-serif text-4xl md:text-5xl font-normal mb-4 text-[#2C2C2C] text-center" data-animate id="inspiration-title">
-              Daily travel inspiration
+              {t("home.inspiration.title")}
             </h2>
             <div className="w-24 h-0.5 bg-[#C9A961] mx-auto mb-16 animate-pulse"></div>
             
@@ -470,9 +472,9 @@ export default function Home() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">Exclusive Places to Explore</h3>
+                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.places.title")}</h3>
                 <p className="text-[#666666] text-sm font-light">
-                  Exceptional ways to discover Ethiopia's rich heritage
+                  {t("home.inspiration.places.desc")}
                 </p>
               </Link>
 
@@ -484,9 +486,9 @@ export default function Home() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">Luxury Hotels Worth the Journey</h3>
+                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.luxury.title")}</h3>
                 <p className="text-[#666666] text-sm font-light">
-                  Experience world-class hospitality in Ethiopia
+                  {t("home.inspiration.luxury.desc")}
                 </p>
               </Link>
 
@@ -498,9 +500,9 @@ export default function Home() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">Top Ethiopian Travel Destinations</h3>
+                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.destinations.title")}</h3>
                 <p className="text-[#666666] text-sm font-light">
-                  Where the world's most discerning travelers are heading
+                  {t("home.inspiration.destinations.desc")}
                 </p>
               </Link>
             </div>
@@ -510,7 +512,7 @@ export default function Home() {
                 href="/tours"
                 className="inline-block px-8 py-3 border-2 border-[#2C2C2C] text-[#2C2C2C] text-xs tracking-widest uppercase font-medium hover:bg-[#2C2C2C] hover:text-white transition-all duration-300"
               >
-                Read More →
+                {t("home.inspiration.readMore")}
               </Link>
             </div>
           </div>
@@ -520,10 +522,10 @@ export default function Home() {
         <section className="py-24 bg-white">
           <div className="max-w-[1000px] mx-auto px-8 text-center">
             <h2 className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C]">
-              A community for luxury travellers
+              {t("home.cta.title")}
             </h2>
             <p className="text-[#666666] text-lg font-light leading-relaxed mb-10 max-w-3xl mx-auto">
-              Haro Dandi is the trusted community for modern luxury travellers. Find inspiration, book unique journeys, and connect with like-minded members.
+              {t("home.cta.description")}
             </p>
           </div>
         </section>

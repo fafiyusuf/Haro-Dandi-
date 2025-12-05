@@ -7,11 +7,13 @@ import { useLanguageStore } from "@/stores/useLanguageStore"
 import type { Tour } from "@/types/index"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export default function Tours() {
   const [tours, setTours] = useState<Tour[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { language } = useLanguageStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -47,8 +49,8 @@ export default function Tours() {
             />
           </div>
           <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-8">
-            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">Tour Services</h1>
-            <p className="text-lg font-light opacity-90">Discover unforgettable travel experiences across Ethiopia</p>
+            <h1 className="font-serif text-5xl md:text-6xl font-normal mb-4 tracking-tight">{t("tours.title")}</h1>
+            <p className="text-lg font-light opacity-90">{t("tours.subtitle")}</p>
           </div>
         </section>
 
@@ -56,9 +58,9 @@ export default function Tours() {
         <section className="py-24 bg-white">
           <div className="max-w-[1400px] mx-auto px-8">
             {isLoading ? (
-              <div className="text-center py-12 text-[#666666]">Loading tours...</div>
+              <div className="text-center py-12 text-[#666666]">{t("tours.loading")}</div>
             ) : tours.length === 0 ? (
-              <div className="text-center py-12 text-[#666666]">No tours available at the moment.</div>
+              <div className="text-center py-12 text-[#666666]">{t("tours.empty")}</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {tours.map((tour) => (
@@ -85,18 +87,18 @@ export default function Tours() {
                           {getContentByLanguage(tour.contents, "description")}
                         </p>
                         <div className="flex items-center justify-between mb-4 text-sm text-[#666666]">
-                          <span className="flex items-center gap-1 font-light">⏱️ {tour.duration} days</span>
+                          <span className="flex items-center gap-1 font-light">⏱️ {tour.duration} {t("tours.days")}</span>
                           <span className="flex items-center gap-1 font-light">
-                            👥 {tour.groupSize.min}-{tour.groupSize.max} people
+                            👥 {tour.groupSize.min}-{tour.groupSize.max} {t("tours.people")}
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-2xl font-light text-[#2C2C2C]">
                             ${tour.pricePerPerson}
-                            <span className="text-sm text-[#666666]">/person</span>
+                            <span className="text-sm text-[#666666]">{t("tours.perPerson")}</span>
                           </span>
                           <span className="text-xs tracking-widest uppercase text-[#75D4D9] font-medium group-hover:text-[#5AB8BD]">
-                            View Details →
+                            {t("tours.viewDetails")}
                           </span>
                         </div>
                       </div>

@@ -1,7 +1,8 @@
-import type React from "react"
+import I18nProvider from "@/components/I18nProvider"
+import "@/globals.css"
 import type { Metadata, Viewport } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
-import "@/globals.css"
+import type React from "react"
 
 const interFont = Inter({ subsets: ["latin"], variable: "--font-sans" })
 const playfairFont = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" })
@@ -31,7 +32,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${interFont.variable} ${playfairFont.variable} font-sans`}>{children}</body>
+      <body className={`${interFont.variable} ${playfairFont.variable} font-sans`}>
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   )
 }
