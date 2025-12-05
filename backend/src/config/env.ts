@@ -5,7 +5,13 @@ export const config = {
   mongoDbName: process.env.MONGO_DB_NAME || "haro-dandi",
   jwtSecret: process.env.JWT_SECRET || "dev-secret-key-change-in-production",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
+  // Single URL for backward compatibility
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000",
+  // Support multiple allowed origins via comma-separated list
+  frontendUrls: (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || "http://localhost:3000")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
   smtpHost: process.env.SMTP_HOST,
   smtpPort: Number.parseInt(process.env.SMTP_PORT || "587"),
   smtpUser: process.env.SMTP_USER,

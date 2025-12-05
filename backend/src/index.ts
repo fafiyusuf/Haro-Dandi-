@@ -1,4 +1,4 @@
-import cors from "cors"
+import cors, { CorsOptions } from "cors"
 import dotenv from "dotenv"
 import express from "express"
 import helmet from "helmet"
@@ -21,7 +21,36 @@ const app = express()
 
 // Middleware
 app.use(helmet())
-app.use(cors({ origin: config.frontendUrl }))
+
+// CORS configuration: allow multiple origins and common patterns
+const allowedOrigins = new Set<string>([...config.frontendUrls])
+
+const corsOptions: CorsOptions = {
+  origin(origin, callback) {
+    // Allow non-browser requests (no origin)
+    if (!origin) return callback(null, true)
+    try {
+      const o = new URL(origin)
+      if (
+        allowedOrigins.has(origin) ||
+        allowedOrigins.has(`${o.protocol}//${o.host}`) ||
+        o.hostname === "localhost" ||
+        o.hostname.endsWith(".vercel.app")
+      ) {
+        return callback(null, true)
+      }
+    } catch {
+      // fall through to reject
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`))
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}
+
+app.use(cors(corsOptions))
+app.options("*", cors(corsOptions))
 app.use(express.json({ limit: "50mb" }))
 app.use(express.urlencoded({ limit: "50mb", extended: true }))
 
