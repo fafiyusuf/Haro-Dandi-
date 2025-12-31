@@ -2,20 +2,29 @@
 
 import Footer from "@/components/footer"
 import Header from "@/components/header"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { motion, useScroll, useSpring, useTransform } from "framer-motion"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { ChevronLeft, ChevronRight, Sparkles, ArrowRight, Star, Globe, Shield, Zap, Users, Gift } from "lucide-react"
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isHovering, setIsHovering] = useState(false)
+  const carouselRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll()
   const { t } = useTranslation()
+  
+  // Modern scroll progress with gradient effect
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.0001
   })
+  
+  // Parallax effects
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,38 +46,41 @@ export default function Home() {
 
   const heroImages = [
     {
-      url: "https://i.imghippo.com/files/gcJs1275qCk.jpg",
+      url: "images/image2.png",
       alt: "Ethiopian Nature"
     },
     {
-      url: "https://i.imghippo.com/files/d7621COc.jpg",
+      url: "images/image1.png",
       alt: "Ethiopian Landscape"
     },
     {
-      url: "https://i.imghippo.com/files/mJ3337PI.jpg",
+      url: "images/land.png",
       alt: "Ethiopian Tourism"
     },
     {
-      url: "https://i.imghippo.com/files/ZQfS2757cM.jpg",
+      url: "images/image4.png",
       alt: "Ethiopian Heritage"
     },
     {
-      url: "https://i.imghippo.com/files/bMLD5552shY.jpg",
+      url: "images/image5.png",
       alt: "Ethiopian Beauty"
     },
-      {
-      url: "https://i.imghippo.com/files/vv1031fOo.jpg",
+    {
+      url: "images/image1.png",
       alt: "Ethiopian Beauty"
     }
   ]
 
   useEffect(() => {
+    if (isHovering) return
+    
+    // Reduced interval from 5000ms to 3000ms for faster slides
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length)
-    }, 5000) // Change slide every 5 seconds
+    }, 2000)
 
     return () => clearInterval(timer)
-  }, [heroImages.length])
+  }, [heroImages.length, isHovering])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroImages.length)
@@ -78,455 +90,594 @@ export default function Home() {
     setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length)
   }
 
+  const benefits = [
+    {
+      icon: <Star className="w-8 h-8" />,
+      titleKey: "home.benefits.hotels.title",
+      descKey: "home.benefits.hotels.desc",
+      gradient: "from-blue-400 to-cyan-300"
+    },
+    {
+      icon: <Globe className="w-8 h-8" />,
+      titleKey: "home.benefits.globalCommunity.title",
+      descKey: "home.benefits.globalCommunity.desc",
+      gradient: "from-emerald-400 to-teal-300"
+    },
+    {
+      icon: <Sparkles className="w-8 h-8" />,
+      titleKey: "home.benefits.events.title",
+      descKey: "home.benefits.events.desc",
+      gradient: "from-amber-400 to-yellow-300"
+    },
+    {
+      icon: <Zap className="w-8 h-8" />,
+      titleKey: "home.benefits.inspiration.title",
+      descKey: "home.benefits.inspiration.desc",
+      gradient: "from-violet-400 to-purple-300"
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      titleKey: "home.benefits.privileges.title",
+      descKey: "home.benefits.privileges.desc",
+      gradient: "from-rose-400 to-pink-300"
+    },
+    {
+      icon: <Gift className="w-8 h-8" />,
+      titleKey: "home.benefits.deals.title",
+      descKey: "home.benefits.deals.desc",
+      gradient: "from-orange-400 to-red-300"
+    }
+  ]
+
   return (
     <>
-      {/* Scroll Progress Bar */}
+      {/* Modern Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#75D4D9] via-[#FAC459] to-[#4A7863] origin-left z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#75D4D9] via-[#FAC459] to-[#4A7863] origin-left z-50 shadow-lg"
         style={{ scaleX }}
       />
+      
+      {/* Animated Background Particles */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50/50 to-blue-50/30"></div>
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-[2px] h-[2px] bg-blue-300/30 rounded-full"
+            animate={{
+              y: [0, -20, 0],
+              x: [0, Math.sin(i) * 10, 0],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: i * 0.1,
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
+      </div>
+
       <Header />
-      <main className="pt-28">
-        {/* Hero Section with Carousel */}
-        <section className="relative h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden">
-          {/* Carousel Images */}
+      
+      <main className="pt-20">
+        {/* Hero Section - Modern Carousel */}
+        <section 
+          className="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden group"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          ref={carouselRef}
+        >
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-black/50 z-0"></div>
+          
+          {/* Animated Background */}
+          <div className="absolute inset-0">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-emerald-500/5"
+              animate={{
+                x: [0, 100, 0],
+                y: [0, 50, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+          </div>
+
+          {/* Carousel Images with Parallax - FASTER TRANSITIONS */}
           <div className="absolute inset-0 w-full h-full">
             {heroImages.map((image, index) => (
-              <div
+              <motion.div
                 key={index}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
+                className="absolute inset-0 w-full h-full"
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{
+                  opacity: index === currentSlide ? 1 : 0,
+                  scale: index === currentSlide ? 1 : 1.1,
+                }}
+                transition={{
+                  duration: 0.8, // Reduced from 1.5 to 0.8 seconds
+                  ease: [0.25, 0.1, 0.25, 1] // Faster easing function
+                }}
+                style={{ y }}
               >
                 <img
                   src={image.url}
                   alt={image.alt}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </motion.div>
             ))}
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-black/40"></div>
+            
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 mix-blend-overlay z-10"></div>
           </div>
 
-          {/* Carousel Navigation Arrows */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-8 z-20 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-white"
-            aria-label="Previous slide"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <button
-            onClick={nextSlide}
-            className="absolute right-8 z-20 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-white"
-            aria-label="Next slide"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Carousel Indicators */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
+          {/* Floating Navigation */}
+          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30 flex gap-3">
             {heroImages.map((_, index) => (
               <motion.button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "bg-white w-8" : "bg-white/50 hover:bg-white/75 w-2"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
+                className="relative"
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
-              />
+              >
+                <motion.div
+                  className={`w-3 h-3 rounded-full backdrop-blur-sm border ${
+                    index === currentSlide 
+                      ? "bg-white border-white" 
+                      : "bg-white/30 border-white/50"
+                  }`}
+                  animate={{
+                    scale: index === currentSlide ? [1, 1.2, 1] : 1,
+                  }}
+                  transition={{
+                    duration: 1.5, // Reduced from 2 seconds
+                    repeat: Infinity,
+                  }}
+                />
+              </motion.button>
             ))}
           </div>
 
-          <motion.div 
-            className="relative z-10 text-center text-white max-w-4xl mx-auto px-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+          {/* Navigation Arrows - Modern */}
+          <motion.button
+            onClick={prevSlide}
+            className="absolute left-8 z-30 p-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 group/arrow"
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.9 }}
           >
+            <ChevronLeft className="w-6 h-6 text-white" />
+            <div className="absolute inset-0 rounded-full border-2 border-white/0 group-hover/arrow:border-white/20 transition-all duration-300"></div>
+          </motion.button>
+
+          <motion.button
+            onClick={nextSlide}
+            className="absolute right-8 z-30 p-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 group/arrow"
+            whileHover={{ scale: 1.1, x: 5 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+            <div className="absolute inset-0 rounded-full border-2 border-white/0 group-hover/arrow:border-white/20 transition-all duration-300"></div>
+          </motion.button>
+
+          {/* Hero Content */}
+          <motion.div 
+            className="relative z-20 text-center text-white max-w-5xl mx-auto px-8"
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }} // Faster animation
+          >
+            {/* Animated Badge */}
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }} // Faster
+            >
+            </motion.div>
+
             <motion.h1 
-              className="font-serif text-6xl md:text-8xl font-light mb-6 tracking-tight leading-tight drop-shadow-2xl"
+              className="font-serif text-2xl sm:text-7xl md:text-8xl lg:text-9xl font-light mb-8 leading-[0.9] tracking-tight"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }} // Faster
+            >
+              <span className="bg-gradient-to-r from-white via-blue-100 to-emerald-100 bg-clip-text text-transparent">
+              {t("hero.title")}
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl md:text-2xl mb-12 font-light tracking-wide max-w-3xl mx-auto text-white/90"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            >
-              {t("hero.title")}
-            </motion.h1>
-            <motion.p 
-              className="text-lg md:text-xl mb-12 font-light tracking-wide max-w-2xl mx-auto drop-shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.7, delay: 0.2 }} // Faster
             >
               {t("hero.subtitle")}
             </motion.p>
+            
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.7, delay: 0.3 }} // Faster
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                className="relative group/btn"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#75D4D9] to-[#4A7863] rounded-full blur opacity-75 group-hover/btn:opacity-100 transition duration-300"></div>
                 <Link
                   href="/hotels"
-                  className="block px-10 py-4 bg-[#75D4D9] text-white text-xs tracking-widest uppercase font-medium hover:bg-[#5AB8BD] transition-all duration-300 shadow-lg"
+                  className="relative px-12 py-5 bg-gradient-to-r from-[#75D4D9] to-[#4A7863] text-white text-sm tracking-widest uppercase font-semibold rounded-full hover:shadow-2xl transition-all duration-300 flex items-center gap-2"
                 >
                   {t("hero.cta.lodges")}
+                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </motion.div>
+              
               <motion.div
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Link
                   href="/contact"
-                  className="block px-10 py-4 border-2 border-white text-white text-xs tracking-widest uppercase font-medium hover:bg-white hover:text-[#4A7863] transition-all duration-300 shadow-lg backdrop-blur-sm"
+                  className="px-12 py-5 border-2 border-white/30 text-white text-sm tracking-widest uppercase font-semibold rounded-full hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:border-white/50"
                 >
                   {t("hero.cta.contact")}
                 </Link>
               </motion.div>
             </motion.div>
+
+            {/* Scroll Indicator */}
+            <motion.div 
+              className="absolute -bottom-24 left-1/2 transform -translate-x-1/2"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }} // Faster
+            >
+              <div className="w-px h-16 bg-gradient-to-b from-white/50 to-transparent"></div>
+            </motion.div>
           </motion.div>
         </section>
 
-        {/* Featured Experiences Section - Image on Right */}
-        <section className="py-24 bg-[#F8F7F5]">
-          <div className="max-w-[1400px] mx-auto px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Featured Experiences - Modern Grid */}
+        <section className="py-32 bg-gradient-to-b from-white to-gray-50/50 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div 
-                className="lg:pr-16"
-                initial={{ opacity: 0, x: -50 }}
+                className="lg:pr-12"
+                initial={{ opacity: 0, x: -60 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: "easeOut" }} // Faster
                 viewport={{ once: true, margin: "-100px" }}
               >
+                <div className="inline-flex items-center gap-3 mb-6">
+                  <div className="w-12 h-px bg-gradient-to-r from-[#75D4D9] to-[#4A7863]"></div>
+                  <span className="text-sm font-semibold tracking-wider text-[#75D4D9] uppercase">
+                    {t("experience")}
+                  </span>
+                </div>
+                
                 <motion.h2 
-                  className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C] leading-tight"
-                  whileHover={{ color: "#75D4D9", x: 10 }}
+                  className="text-5xl md:text-6xl font-bold mb-8 text-gray-900 leading-tight"
+                  whileHover={{ color: "#75D4D9" }}
                   transition={{ duration: 0.3 }}
                 >
                   {t("home.experience.title")}
                 </motion.h2>
+                
                 <motion.p 
-                  className="text-[#666666] text-base font-light leading-relaxed"
+                  className="text-lg text-gray-600 leading-relaxed mb-10"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                  transition={{ duration: 0.6, delay: 0.15 }} // Faster
                   viewport={{ once: true }}
                 >
                   {t("home.experience.description")}
                 </motion.p>
-              </motion.div>
-              <motion.div 
-                className="relative h-[500px] overflow-hidden shadow-lg group"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <motion.img
-                  src="https://i.imghippo.com/files/vv1031fOo.jpg"
-                  alt="Ethiopian Hospitality"
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Discover Section - Image on Left */}
-        <section className="py-24 bg-white">
-          <div className="max-w-[1400px] mx-auto px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div 
-                className="relative h-[500px] overflow-hidden shadow-lg group"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <motion.img
-                  src="https://i.imghippo.com/files/kRWY5305ByE.jpg"
-                  alt="Discover Ethiopia"
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                />
-              </motion.div>
-              <motion.div 
-                className="lg:pl-16"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-              >
-                <motion.h2 
-                  className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C] leading-tight"
-                  whileHover={{ color: "#75D4D9", x: 10 }}
+                
+                <motion.div
+                  whileHover={{ x: 10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {t("home.discover.title")}
-                </motion.h2>
-                <motion.p 
-                  className="text-[#666666] text-base font-light leading-relaxed"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  {t("home.discover.description")}
-                </motion.p>
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center gap-2 text-[#4A7863] font-semibold group"
+                  >
+                    <span>{t("Discover More")}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              </motion.div>
+              
+              <motion.div 
+                className="relative"
+                initial={{ opacity: 0, x: 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }} // Faster
+                viewport={{ once: true, margin: "-100px" }}
+              >
+                <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                  <motion.img
+                    src="images/hos.png"
+                    alt="Ethiopian Hospitality"
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5 }} // Faster
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                </div>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Community Section - Image on Right */}
-        <section className="py-24 bg-[#F8F7F5]">
-          <div className="max-w-[1400px] mx-auto px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div 
-                className="lg:pr-16"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-              >
-                <motion.h2 
-                  className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C] leading-tight"
-                  whileHover={{ color: "#75D4D9", x: 10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {t("home.community.title")}
-                </motion.h2>
-                <motion.p 
-                  className="text-[#666666] text-base font-light leading-relaxed"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  {t("home.community.description")}
-                </motion.p>
-              </motion.div>
-              <motion.div 
-                className="relative h-[500px] overflow-hidden shadow-lg"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true, margin: "-100px" }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <motion.img
-                  src="https://i.imghippo.com/files/ckUa3138qpA.jpg"
-                  alt="Ethiopian Community"
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-24 bg-white">
-          <div className="max-w-[1400px] mx-auto px-8">
-            <motion.h2 
-              className="font-serif text-4xl md:text-5xl font-normal mb-16 text-[#2C2C2C] text-center"
+        {/* Benefits Section - Modern Grid */}
+        <section className="py-32 bg-gradient-to-b from-gray-50/50 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              className="text-center mb-20"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }} // Faster
               viewport={{ once: true }}
             >
-              {t("home.benefits.title")}
-            </motion.h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
-                  titleKey: "home.benefits.hotels.title",
-                  descKey: "home.benefits.hotels.desc"
-                },
-                {
-                  icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-                  titleKey: "home.benefits.globalCommunity.title",
-                  descKey: "home.benefits.globalCommunity.desc"
-                },
-                {
-                  icon: "M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7",
-                  titleKey: "home.benefits.events.title",
-                  descKey: "home.benefits.events.desc"
-                }
-              ].map((benefit, i) => (
+              <div className="inline-flex items-center gap-3 mb-6">
+                <div className="w-12 h-px bg-gradient-to-r from-[#FAC459] to-[#4A7863]"></div>
+                <span className="text-sm font-semibold tracking-wider text-[#FAC459] uppercase">
+                  {t("benefits")}
+                </span>
+                <div className="w-12 h-px bg-gradient-to-r from-[#4A7863] to-[#FAC459]"></div>
+              </div>
+              
+              <motion.h2 
+                className="text-5xl md:text-6xl font-bold mb-6 text-gray-900"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                {t("home.benefits.title")}
+              </motion.h2>
+              
+            </motion.div>
+
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {benefits.map((benefit, index) => (
                 <motion.div
-                  key={i}
-                  className="bg-[#E8DFD0] p-10 text-center cursor-pointer group"
+                  key={index}
+                  className="group relative"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }} // Much faster
                   viewport={{ once: true }}
-                  whileHover={{ y: -10, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+                  whileHover={{ y: -10 }}
                 >
-                  <motion.div 
-                    className="mb-4 flex justify-center"
-                    whileHover={{ scale: 1.2, rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <svg className="w-12 h-12 text-[#4A7863]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={benefit.icon} />
-                    </svg>
-                  </motion.div>
-                  <motion.h3 
-                    className="font-serif mb-3 text-[#2C2C2C] uppercase tracking-wider text-sm"
-                    whileHover={{ color: "#75D4D9" }}
-                  >
-                    {t(benefit.titleKey)}
-                  </motion.h3>
-                  <p className="text-[#666666] text-sm font-light leading-relaxed">
-                    {t(benefit.descKey)}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-              {[
-                {
-                  icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7",
-                  titleKey: "home.benefits.inspiration.title",
-                  descKey: "home.benefits.inspiration.desc"
-                },
-                {
-                  icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-                  titleKey: "home.benefits.privileges.title",
-                  descKey: "home.benefits.privileges.desc"
-                },
-                {
-                  icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-                  titleKey: "home.benefits.deals.title",
-                  descKey: "home.benefits.deals.desc"
-                }
-              ].map((benefit, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-[#E8DFD0] p-10 text-center cursor-pointer group"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.2 + 0.6 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -10, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-                >
-                  <motion.div 
-                    className="mb-4 flex justify-center"
-                    whileHover={{ scale: 1.2, rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <svg className="w-12 h-12 text-[#4A7863]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={benefit.icon} />
-                    </svg>
-                  </motion.div>
-                  <motion.h3 
-                    className="font-serif mb-3 text-[#2C2C2C] uppercase tracking-wider text-sm"
-                    whileHover={{ color: "#75D4D9" }}
-                  >
-                    {t(benefit.titleKey)}
-                  </motion.h3>
-                  <p className="text-[#666666] text-sm font-light leading-relaxed">
-                    {t(benefit.descKey)}
-                  </p>
+                  {/* Background Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white to-gray-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="relative bg-white rounded-2xl p-8 shadow-lg group-hover:shadow-2xl transition-all duration-300 border border-gray-100 group-hover:border-transparent">
+                    {/* Icon with Gradient */}
+                    <motion.div 
+                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }} // Faster
+                    >
+                      <div className="text-white">
+                        {benefit.icon}
+                      </div>
+                    </motion.div>
+                    
+                    {/* Content */}
+                    <motion.h3 
+                      className="text-xl font-bold mb-3 text-gray-900"
+                      whileHover={{ color: "#75D4D9" }}
+                    >
+                      {t(benefit.titleKey)}
+                    </motion.h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {t(benefit.descKey)}
+                    </p>
+                    
+                    {/* Hover Arrow */}
+                    <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-[#75D4D9]">
+                        <span>{t("learnMore")}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Daily Travel Inspiration */}
-        <section className="py-24 bg-[#F8F7F5]">
-          <div className="max-w-[1400px] mx-auto px-8">
-            <h2 className="font-serif text-4xl md:text-5xl font-normal mb-4 text-[#2C2C2C] text-center" data-animate id="inspiration-title">
-              {t("home.inspiration.title")}
-            </h2>
-            <div className="w-24 h-0.5 bg-[#C9A961] mx-auto mb-16 animate-pulse"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Link href="/tours" className="group" data-animate id="inspiration-1">
-                <div className="relative h-[300px] mb-4 overflow-hidden shadow-lg">
-                  <img
-                    src="https://i.imghippo.com/files/RVXR3725Ww.jpg"
-                    alt="Historic Sites"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.places.title")}</h3>
-                <p className="text-[#666666] text-sm font-light">
-                  {t("home.inspiration.places.desc")}
-                </p>
-              </Link>
+        {/* Daily Travel Inspiration - Modern Cards */}
+        <section className="py-32 bg-gradient-to-b from-white via-blue-50/30 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              className="text-center mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }} // Faster
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
+                {t("home.inspiration.title")}
+              </h2>
+            </motion.div>
 
-              <Link href="/hotels" className="group">
-                <div className="relative h-[300px] mb-4 overflow-hidden">
-                  <img
-                    src="https://i.imghippo.com/files/NdM9872Psc.jpg"
-                    alt="Ethiopian Luxury Hotels"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.luxury.title")}</h3>
-                <p className="text-[#666666] text-sm font-light">
-                  {t("home.inspiration.luxury.desc")}
-                </p>
-              </Link>
-
-              <Link href="/tours" className="group">
-                <div className="relative h-[300px] mb-4 overflow-hidden">
-                  <img
-                    src="https://i.imghippo.com/files/JoE2196uxw.jpg"
-                    alt="Travel Destinations"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <h3 className="font-serif text-xl mb-2 text-[#2C2C2C]">{t("home.inspiration.destinations.title")}</h3>
-                <p className="text-[#666666] text-sm font-light">
-                  {t("home.inspiration.destinations.desc")}
-                </p>
-              </Link>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  image: "images/lali.png",
+                  titleKey: "home.inspiration.places.title",
+                  descKey: "home.inspiration.places.desc",
+                  link: "/tours",
+                  badgeKey: "home.inspiration.places.badge"
+                },
+                {
+                  image: "images/hot.png",
+                  titleKey: "home.inspiration.luxury.title",
+                  descKey: "home.inspiration.luxury.desc",
+                  link: "/hotels",
+                  badgeKey: "home.inspiration.luxury.badge"
+                },
+                {
+                  image: "images/card2.png",
+                  titleKey: "home.inspiration.destinations.title",
+                  descKey: "home.inspiration.destinations.desc",
+                  link: "/tours",
+                  badgeKey: "home.inspiration.luxury.badge"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.15 }} // Faster
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10 }}
+                >
+                  <Link href={item.link} className="group block">
+                    <div className="relative rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300 mb-6">
+                      {/* Image */}
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <motion.img
+                          src={item.image}
+                          alt=""
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" // Faster
+                        />
+                      </div>
+                      
+                      {/* Overlay Gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                      
+                      {/* Badge */}
+                      <div className="absolute top-6 right-6">
+                        <span className="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-semibold text-gray-900">
+                          {item.badge}
+                        </span>
+                      </div>
+                      
+                      {/* Content Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-8">
+                        <motion.h3 
+                          className="text-2xl font-bold text-white mb-3"
+                          whileHover={{ x: 5 }}
+                        >
+                          {t(item.titleKey)}
+                        </motion.h3>
+                        <p className="text-white/90 mb-4">
+                          {t(item.descKey)}
+                        </p>
+                        <div className="inline-flex items-center gap-2 text-white font-semibold">
+                          <span>{t("explore")}</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
 
-            <div className="text-center mt-12">
+            {/* View All Button */}
+            <motion.div 
+              className="text-center mt-16"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.4 }} // Faster
+              viewport={{ once: true }}
+            >
               <Link
                 href="/tours"
-                className="inline-block px-8 py-3 border-2 border-[#2C2C2C] text-[#2C2C2C] text-xs tracking-widest uppercase font-medium hover:bg-[#2C2C2C] hover:text-white transition-all duration-300"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#75D4D9] to-[#4A7863] text-white font-semibold rounded-full hover:shadow-2xl transition-all duration-300 group"
               >
-                {t("home.inspiration.readMore")}
+                <span>{t("home.inspiration.readMore")}</span>
+                
               </Link>
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 bg-white">
-          <div className="max-w-[1000px] mx-auto px-8 text-center">
-            <h2 className="font-serif text-4xl md:text-5xl font-normal mb-6 text-[#2C2C2C]">
-              {t("home.cta.title")}
-            </h2>
-            <p className="text-[#666666] text-lg font-light leading-relaxed mb-10 max-w-3xl mx-auto">
-              {t("home.cta.description")}
-            </p>
+        {/* CTA Section - Modern Gradient */}
+        <section className="py-32 relative overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#75D4D9]  to-[#4A7863]"></div>
+          
+          {/* Simplified pattern to avoid escape issues */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_50%)] opacity-20"></div>
+          
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }} // Faster
+              viewport={{ once: true }}
+            >
+              {/* Title */}
+              <motion.h2 
+                className="text-5xl md:text-7xl font-bold mb-8 text-white"
+                whileHover={{ scale: 1.02 }}
+              >
+                {t("home.cta.title")}
+              </motion.h2>
+              
+              {/* Description */}
+              <motion.p 
+                className="text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.15 }} // Faster
+              >
+                {t("home.cta.description")}
+              </motion.p>
+              
+              {/* CTA Button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-block"
+              >
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-3 px-12 py-5 bg-white text-gray-900 font-bold text-lg rounded-full hover:shadow-2xl transition-all duration-300 group"
+                >
+                  <span>{t("Contact Us")}</span>
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                </Link>
+              </motion.div>
+              
+              {/* Stats */}
+              <motion.div 
+                className="grid grid-cols-3 gap-8 mt-16 pt-8 border-t border-white/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }} // Faster
+              >
+                {[
+                  { value: "500+", label: t("happyGuests") },
+                  { value: "50+", label: t("destinations") },
+                  { value: "24/7", label: t("support") }
+                ].map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
+                    <div className="text-white/80">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
           </div>
         </section>
       </main>
