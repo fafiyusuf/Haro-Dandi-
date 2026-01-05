@@ -36,6 +36,14 @@ export default function Home() {
   }, [])
 
   const heroImages = [
+        {
+      url: "/Lake_Dendi_shewa_oromia_6_1000x667.jpg",
+      alt: "Ethiopian Nature"
+    },
+        {
+      url: "/images.jpeg",
+      alt: "Ethiopian Nature"
+    },
     {
       url: "https://i.imghippo.com/files/gcJs1275qCk.jpg",
       alt: "Ethiopian Nature"
@@ -53,8 +61,8 @@ export default function Home() {
       alt: "Ethiopian Heritage"
     },
     {
-      url: "https://i.imghippo.com/files/bMLD5552shY.jpg",
-      alt: "Ethiopian Beauty"
+      url: "https://www.imghippo.com/i/tr4351NL.jpeg",
+      alt: "Haroo dandi li"
     },
       {
       url: "https://i.imghippo.com/files/vv1031fOo.jpg",
