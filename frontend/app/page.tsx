@@ -60,10 +60,6 @@ export default function Home() {
       url: "https://i.imghippo.com/files/ZQfS2757cM.jpg",
       alt: "Ethiopian Heritage"
     },
-    {
-      url: "https://www.imghippo.com/i/tr4351NL.jpeg",
-      alt: "Haroo dandi li"
-    },
       {
       url: "https://i.imghippo.com/files/vv1031fOo.jpg",
       alt: "Ethiopian Beauty"

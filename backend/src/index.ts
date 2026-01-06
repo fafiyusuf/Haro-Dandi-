@@ -35,7 +35,10 @@ const corsOptions: CorsOptions = {
         allowedOrigins.has(origin) ||
         allowedOrigins.has(`${o.protocol}//${o.host}`) ||
         o.hostname === "localhost" ||
-        o.hostname.endsWith(".vercel.app")
+        o.hostname.endsWith(".vercel.app") ||
+        o.hostname.endsWith(".harodandihoteltourism.et") ||
+        o.hostname === "harodandihoteltourism.et" ||
+        o.hostname === "www.harodandihoteltourism.et"
       ) {
         return callback(null, true)
       }
