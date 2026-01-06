@@ -78,22 +78,32 @@ export default function Contact() {
               {/* Contact Info */}
               <div className="lg:col-span-1 space-y-8">
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📍 {t("contact.address")}</h3>
-                  <p className="text-[#666666] font-light">{t("contact.address.value")}</p>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📍 Address</h3>
+                  <p className="text-[#666666] font-light">
+                    Addis Ababa, Gabisa Building 3rd Floor, Office No. 308, Around Winget Square
+                  </p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📞 {t("contact.phone")}</h3>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📞 Phone</h3>
                   <p className="text-[#666666] font-light">
-                    <a href="tel:+251" className="hover:text-[#75D4D9] transition-colors">
-                      +251 XXX XXX XXX
+                    <a href="tel:+251912021545" className="hover:text-[#75D4D9] transition-colors">
+                      +251 912 021 545
                     </a>
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📧 {t("contact.email")}</h3>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📧 Email</h3>
                   <p className="text-[#666666] font-light">
-                    <a href="mailto:info@harodandi.com" className="hover:text-[#75D4D9] transition-colors">
-                      info@harodandi.com
+                    <a href="mailto:harodandihotelandtourism@gmail.com" className="hover:text-[#75D4D9] transition-colors">
+                      harodandihotelandtourism@gmail.com
+                    </a>
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-serif text-lg mb-3 text-[#2C2C2C]">📱 Facebook</h3>
+                  <p className="text-[#666666] font-light">
+                    <a href="https://www.facebook.com/harodandihoteltourism" target="_blank" rel="noopener noreferrer" className="hover:text-[#75D4D9] transition-colors">
+                      Haro Dandi Hotel and Tourism SC
                     </a>
                   </p>
                 </div>
