@@ -1,8 +1,8 @@
 import { Router, type Response } from "express"
 import { body, validationResult } from "express-validator"
-import GalleryImage from "../models/Gallery.js"
-import { type AuthRequest, authenticateToken } from "../middleware/auth.js"
+import { authenticateToken, type AuthRequest } from "../middleware/auth.js"
 import { asyncHandler } from "../middleware/errorHandler.js"
+import GalleryImage from "../models/Gallery.js"
 
 const router = Router()
 
