@@ -24,7 +24,17 @@ router.get(
 router.post(
   "/",
   authenticateToken,
-  [body("url").isURL(), body("title").notEmpty(), body("category").isIn(["hotel", "tour", "experience", "other"])],
+  [
+    body("url")
+      .custom((value) => {
+        // Allow both HTTP/HTTPS URLs and data URLs
+        if (value.startsWith("data:image/")) return true
+        if (value.startsWith("http://") || value.startsWith("https://")) return true
+        throw new Error("Invalid URL format")
+      }),
+    body("title").notEmpty(),
+    body("category").isIn(["hotel", "tour", "experience", "other"]),
+  ],
   asyncHandler(async (req: AuthRequest, res: Response) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

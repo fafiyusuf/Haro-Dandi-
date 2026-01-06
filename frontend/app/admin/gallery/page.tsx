@@ -48,8 +48,13 @@ export default function AdminGallery() {
       }
       setUploadedUrls([])
       setImageTitle("")
-    } catch (error) {
+      alert("Images added successfully!")
+    } catch (error: any) {
       console.error("Error adding image:", error)
+      const errorMessage = error.response?.data?.errors
+        ? error.response.data.errors.map((e: any) => e.msg).join(", ")
+        : error.response?.data?.message || "Failed to add images. Please try again."
+      alert(errorMessage)
     }
   }
 
